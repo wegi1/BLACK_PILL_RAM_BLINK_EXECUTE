@@ -7,17 +7,26 @@ BLACK_PILL_BLINK_ASM.elf:     file format elf32-littlearm
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
+
   0 .text         00000080  08000000  08000000  00010000  2**1
+  
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
+                  
   1 .ARM.attributes 00000025  00000000  00000000  00010080  2**0
+  
                   CONTENTS, READONLY
+                  
 
 Disassembly of section .text:
 
 08000000 <Reset_Handler-0x24>:
+
  8000000:	20000700 	.word	0x20000700
+ 
  8000004:	08000025 	.word	0x08000025
+ 
  8000008:	0007a120 	.word	0x0007a120
+ 
  800000c:	40023800 	.word	0x40023800
  8000010:	20000000 	.word	0x20000000
  8000014:	00000080 	.word	0x00000080
