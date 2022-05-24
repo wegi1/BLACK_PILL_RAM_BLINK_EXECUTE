@@ -1,0 +1,73 @@
+# BLACK PILL - Ok - RAM running led blinking - for STM32F401CDU6 version
+
+![Screenshot](/BLACK_PILL.JPG)
+
+
+BLACK_PILL_BLINK_ASM.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000080  08000000  08000000  00010000  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .ARM.attributes 00000025  00000000  00000000  00010080  2**0
+                  CONTENTS, READONLY
+
+Disassembly of section .text:
+
+08000000 <Reset_Handler-0x24>:
+ 8000000:	20000700 	.word	0x20000700
+ 8000004:	08000025 	.word	0x08000025
+ 8000008:	0007a120 	.word	0x0007a120
+ 800000c:	40023800 	.word	0x40023800
+ 8000010:	20000000 	.word	0x20000000
+ 8000014:	00000080 	.word	0x00000080
+ 8000018:	20000057 	.word	0x20000057
+ 800001c:	08000000 	.word	0x08000000
+ 8000020:	20000710 	.word	0x20000710
+
+08000024 <Reset_Handler>:
+ 8000024:	f04f 6700 	mov.w	r7, #134217728	; 0x8000000
+ 8000028:	6938      	ldr	r0, [r7, #16]
+ 800002a:	6979      	ldr	r1, [r7, #20]
+ 800002c:	69fa      	ldr	r2, [r7, #28]
+ 800002e:	2300      	movs	r3, #0
+
+08000030 <Copy_Data>:
+ 8000030:	58d4      	ldr	r4, [r2, r3]
+ 8000032:	50c4      	str	r4, [r0, r3]
+ 8000034:	3304      	adds	r3, #4
+ 8000036:	428b      	cmp	r3, r1
+ 8000038:	d3fa      	bcc.n	8000030 <Copy_Data>
+ 800003a:	68bc      	ldr	r4, [r7, #8]
+ 800003c:	ea4f 0494 	mov.w	r4, r4, lsr #2
+ 8000040:	6084      	str	r4, [r0, #8]
+ 8000042:	6985      	ldr	r5, [r0, #24]
+ 8000044:	6a14      	ldr	r4, [r2, #32]
+ 8000046:	6823      	ldr	r3, [r4, #0]
+ 8000048:	f083 0301 	eor.w	r3, r3, #1
+ 800004c:	f013 0301 	ands.w	r3, r3, #1
+ 8000050:	6023      	str	r3, [r4, #0]
+ 8000052:	d000      	beq.n	8000056 <ram_code>
+ 8000054:	46af      	mov	pc, r5
+
+08000056 <ram_code>:
+ 8000056:	467f      	mov	r7, pc
+ 8000058:	f007 5720 	and.w	r7, r7, #671088640	; 0x28000000
+ 800005c:	68f8      	ldr	r0, [r7, #12]
+ 800005e:	6b01      	ldr	r1, [r0, #48]	; 0x30
+ 8000060:	f041 0104 	orr.w	r1, r1, #4
+ 8000064:	6301      	str	r1, [r0, #48]	; 0x30
+ 8000066:	f04f 6180 	mov.w	r1, #67108864	; 0x4000000
+ 800006a:	f5a0 5040 	sub.w	r0, r0, #12288	; 0x3000
+ 800006e:	6001      	str	r1, [r0, #0]
+ 8000070:	60c1      	str	r1, [r0, #12]
+
+08000072 <LOOP01>:
+ 8000072:	f481 5100 	eor.w	r1, r1, #8192	; 0x2000
+ 8000076:	6141      	str	r1, [r0, #20]
+ 8000078:	68ba      	ldr	r2, [r7, #8]
+
+0800007a <LOOP02>:
+ 800007a:	3a01      	subs	r2, #1
+ 800007c:	d1fd      	bne.n	800007a <LOOP02>
+ 800007e:	d0f8      	beq.n	8000072 <LOOP01>
